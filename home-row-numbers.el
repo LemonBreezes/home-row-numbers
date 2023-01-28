@@ -393,14 +393,22 @@ already loaded."
 	  :decimal ,decimal
 	  :numbers ,(unless (eql numbers 'normal) numbers))
 	t)
-  (when compile
-    (byte-compile #'home-row-numbers-argument)
-    (when print-key
-      (byte-compile #'home-row-numbers-print)
-      (when print-and-continue-key
+  (when (and compile
+             (or (not (fboundp 'subr-native-elisp-p))
+                 (not (subr-native-elisp-p (symbol-function #'home-row-numbers-argument)))))
+    (byte-compile #'home-row-numbers-argument))
+    (when (and print-key
+               (or (not (fboundp 'subr-native-elisp-p))
+                   (not (subr-native-elisp-p (symbol-function #'home-row-numbers-print)))))
+        (byte-compile #'home-row-numbers-print))
+      (when (and print-and-continue-key
+                 (or (not (fboundp 'subr-native-elisp-p))
+                     (not (subr-native-elisp-p (symbol-function #'home-row-numbers-continue)))))
 	(byte-compile #'home-row-numbers-continue))
-      (when decimal-key
-	(byte-compile #'home-row-numbers-decimal)))))
+      (when (and decimal-key
+                 (or (not (fboundp 'subr-native-elisp-p))
+                     (not (subr-native-elisp-p (symbol-function #'home-row-numbers-decimal)))))
+	(byte-compile #'home-row-numbers-decimal)))
 
 (cl-define-compiler-macro home-row-numbers (&whole form &rest args)
   (if (cl-every
