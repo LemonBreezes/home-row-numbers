@@ -156,7 +156,7 @@ arguments are constants."
 	     (setq home-row-numbers-already-printed nil
 		   home-row-numbers-leading-zeroes 0))
 	   (when arg-and-key-are-zero
-	     (incf home-row-numbers-leading-zeroes))
+	     (cl-incf home-row-numbers-leading-zeroes))
 	   (digit-argument arg)
 	   ,(when message
 	      `(let ((message-log-max nil)
