@@ -402,7 +402,7 @@ already loaded."
       (when decimal-key
 	(byte-compile #'home-row-numbers-decimal)))))
 
-(define-compiler-macro home-row-numbers (&whole form &rest args)
+(cl-define-compiler-macro home-row-numbers (&whole form &rest args)
   (if (cl-every
        (lambda (x)
 	 (or (keywordp x)
